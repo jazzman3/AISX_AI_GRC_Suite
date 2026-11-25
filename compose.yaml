@@ -1,0 +1,72 @@
+name: aisx-ai-grc
+x-base: &base
+  build: ./shared
+  restart: unless-stopped
+  env_file: .env
+  security_opt:
+    - no-new-privileges:true
+  read_only: true
+  tmpfs:
+    - /tmp
+  healthcheck:
+    test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health',timeout=3)"]
+    interval: 30s
+    timeout: 5s
+    retries: 3
+services:
+  inventory:
+    <<: *base
+    environment:
+      MODULE: inventory
+      DB_PATH: /data/inventory.db
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SEED_DEMO: ${SEED_DEMO:-1}
+    ports: ["127.0.0.1:8201:8000"]
+    volumes: ["inventory_data:/data"]
+  risk:
+    <<: *base
+    environment:
+      MODULE: risk
+      DB_PATH: /data/risk.db
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SEED_DEMO: ${SEED_DEMO:-1}
+    ports: ["127.0.0.1:8202:8000"]
+    volumes: ["risk_data:/data"]
+  compliance:
+    <<: *base
+    environment:
+      MODULE: compliance
+      DB_PATH: /data/compliance.db
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SEED_DEMO: ${SEED_DEMO:-1}
+    ports: ["127.0.0.1:8203:8000"]
+    volumes: ["compliance_data:/data"]
+  vendor:
+    <<: *base
+    environment:
+      MODULE: vendor
+      DB_PATH: /data/vendor.db
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SEED_DEMO: ${SEED_DEMO:-1}
+    ports: ["127.0.0.1:8204:8000"]
+    volumes: ["vendor_data:/data"]
+  monitoring:
+    <<: *base
+    environment:
+      MODULE: monitoring
+      DB_PATH: /data/monitoring.db
+      ADMIN_USER: ${ADMIN_USER}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      SEED_DEMO: ${SEED_DEMO:-1}
+    ports: ["127.0.0.1:8205:8000"]
+    volumes: ["monitoring_data:/data"]
+volumes:
+  inventory_data:
+  risk_data:
+  compliance_data:
+  vendor_data:
+  monitoring_data:

@@ -31,4 +31,3 @@ Example: `curl -u aisx-admin:YOUR_PASSWORD http://127.0.0.1:8201/api/summary`
 This release is **a deployable, tested reference/demo system**, not enterprise production-ready. It does not automatically discover assets, monitor live models, collect audit evidence, or determine legal compliance. The EU AI Act mapping is a training/sample register, not a legal mapping. For enterprise production use replace HTTP Basic auth, implement SSO+MFA/RBAC, rate limiting, encrypted managed database, tenant isolation, background jobs, audit immutability, integrations, SIEM, tests and monitoring. See `docs/DEPLOYMENT.md`.
 
 Synthetic demonstration records only. Never upload client secrets, PII, regulated data, or actual contract evidence to this reference deployment. No LLM calls are made; risk scores are deterministic illustrations.
-
